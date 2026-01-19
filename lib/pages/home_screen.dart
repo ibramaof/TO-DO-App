@@ -10,6 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _controller = TextEditingController();
   List todoList = [
     ['First Task', false],
     ['Second Task', false],
@@ -21,11 +22,25 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onSave() {
+    setState(() {
+      todoList.add([_controller.text, false]);
+    });
+    _controller.clear();
+    Navigator.pop(context);
+  }
+
+  void deleteTask(int index) {
+    setState(() {
+      todoList.removeAt(index);
+    });
+  }
+
   void createNewTask() {
     showDialog(
       context: context,
       builder: (context) {
-        return DialogBox();
+        return DialogBox(onSave: onSave, controller: _controller);
       },
     );
   }
@@ -55,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: todoList.length,
         itemBuilder: (context, index) {
           return TaskTile(
+            deleteTask: (context) => deleteTask(index),
             taskText: todoList[index][0],
             taskCheck: todoList[index][1],
             onChange: (value) => onChange(value, index),
