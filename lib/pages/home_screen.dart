@@ -9,6 +9,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List todoList = [
+    ['First Task', false],
+    ['Second Task', false],
+    ['Third Task', false],
+  ];
+  void onChange(bool? value, index) {
+    setState(() {
+      todoList[index][1] = !todoList[index][1];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
-      body: ListView(children: [TaskTile()]),
+      body: ListView.builder(
+        itemCount: todoList.length,
+        itemBuilder: (context, index) {
+          return TaskTile(
+            taskText: todoList[index][0],
+            taskCheck: todoList[index][1],
+            onChange: (value) => onChange(value, index),
+          );
+        },
+      ),
     );
   }
 }
