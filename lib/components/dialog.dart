@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/components/my_button.dart';
 
+// ignore: must_be_immutable
 class DialogBox extends StatelessWidget {
-  const DialogBox({super.key});
+  VoidCallback onSave;
+  final TextEditingController controller;
+  DialogBox({super.key, required this.onSave, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,7 @@ class DialogBox extends StatelessWidget {
             child: Column(
               children: [
                 TextField(
+                  controller: controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'New Task',
@@ -26,10 +30,7 @@ class DialogBox extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        MyButton(name: 'Save', onPressed: () {}),
-                        MyButton(name: 'Cancel', onPressed: () {}),
-                      ],
+                      children: [MyButton(name: 'Save', onPressed: onSave)],
                     ),
                   ),
                 ),
